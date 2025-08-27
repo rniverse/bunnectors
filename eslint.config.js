@@ -24,7 +24,16 @@ export default [
       'quotes': ['error', 'single', { 'avoidEscape': true }],
 
       // enforce trailing commas for multiline
-      'comma-dangle': ['error', 'always-multiline'],
+      'comma-dangle': [
+        "error",
+        {
+          "arrays": "always-multiline",
+          "objects": "always-multiline",
+          "imports": "never",
+          "exports": "never",
+          "functions": "never"
+        }
+      ],
 
       // array / object formatting: allow up to 3 inline, otherwise break
       'array-element-newline': ['error', { minItems: 4 }],

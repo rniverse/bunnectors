@@ -1,19 +1,29 @@
-import { RedisClient } from 'bun';
+import { createClient, type RedisClientType } from 'redis';
 
 import type { IDatabase } from './db';
 
-export class RedisDB implements IDatabase {
-  private client: RedisClient | undefined;
 
-  async connect(opts: any) {
-    const { url } = opts;
+export const getClient = (params: any) => {
+  const { url, ...opts } = params;
+  const uri = url || process.env.REDIS_URL || 'redis://localhost:6379';
+  return createClient({
+    url: uri,
+    ...opts,
+  });
+};
+
+export class RedisDB implements IDatabase {
+  private client: RedisClientType | undefined;
+
+  async connect(params: any) {
+    const { url, ...opts } = params;
     const uri = url || process.env.REDIS_URL || 'redis://localhost:6379';
     console.log(`Connecting to Redis at ${uri}`);
-    this.client = new RedisClient({
+    this.client = createClient({
       url: uri,
       ...opts,
     });
-    await this.client.connect();
+    return this.client.connect();
   }
 
   async close() {

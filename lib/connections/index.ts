@@ -4,3 +4,4 @@ export * from './pg';
 export * from './mongodb';
 export * from './kafka';
 export * from './stream';
+export * from './redpanda';
