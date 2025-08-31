@@ -24,6 +24,7 @@ export class MongoDB implements IDatabase {
     this.client = undefined;
   }
   async healthCheck(): Promise<boolean> {
+    await this.client?.db('test').collection('healthcheck').findOne({});
     return true;
   }
 }

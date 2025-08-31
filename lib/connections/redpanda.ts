@@ -1,5 +1,5 @@
 import {
- Kafka, type Producer, type Consumer, type EachMessagePayload 
+  Kafka, type Producer, type Consumer, type EachMessagePayload
 } from 'kafkajs';
 
 export class RedpandaClient {
@@ -14,6 +14,9 @@ export class RedpandaClient {
     this.kafka = new Kafka({
       brokers,
       clientId: this.clientId,
+      enforceRequestTimeout: true,
+      requestTimeout: 30000, // default
+      connectionTimeout: 10000, // default
     });
     this.producer = this.kafka.producer();
   }
@@ -53,9 +56,9 @@ export class RedpandaClient {
     }
 
     await consumer.subscribe({
- topic,
-fromBeginning: true, 
-});
+      topic,
+      fromBeginning: true,
+    });
 
     await consumer.run({
       eachMessage: async (payload) => {
